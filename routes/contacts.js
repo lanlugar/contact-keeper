@@ -77,7 +77,7 @@ router.put(
     if (type) contactFields.type = contactFields;
 
     try {
-      let contact = await Contact.findId(req.params.id);
+      let contact = await Contact.findById(req.params.id);
 
       if (!contact) return res.status(404).json({ msg: "Contact not Found" });
 
@@ -86,6 +86,7 @@ router.put(
         return res.status(401).json({ msg: "Not authorized" });
       }
 
+      console.log(contactFields);
       contact = await Contact.findByIdAndUpdate(
         req.params.id,
         { $set: contactFields },
@@ -104,8 +105,20 @@ router.put(
 // @desc      Delete contact
 // @access    Private
 
-router.delete("/:id", (req, res) => {
-  res.send("Delete contact");
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    let contact = await Contact.findById(req.params.id);
+    if (!contact) return res.status(404).json({ msg: "Contact not found" });
+
+    if (contact.user.toString() !== req.user.id.toString())
+      return res.status(401).json({ msg: "Not Authorized" });
+
+    await Contact.findByIdAndRemove(req.params.id);
+    res.json({ msg: "Contact removed" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 module.exports = router;

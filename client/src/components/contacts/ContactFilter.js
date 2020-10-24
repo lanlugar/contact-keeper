@@ -3,6 +3,7 @@ import ContactContext from "../../context/contact/contactContext";
 
 const ContactFilter = () => {
   const contactContext = useContext(ContactContext);
+  const { filterContacts, clearFilter, filtered } = contactContext;
   const text = useRef("");
 
   useEffect(() => {
@@ -12,10 +13,10 @@ const ContactFilter = () => {
   });
 
   const onChange = (e) => {
-    if (text.current.value != "") {
-      contactContext.filterContacts(e.target.value);
+    if (text.current.value !== "") {
+      filterContacts(e.target.value);
     } else {
-      contactContext.clearFilter();
+      clearFilter();
     }
   };
 

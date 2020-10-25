@@ -4,7 +4,7 @@ import Navbar from "./components/layout/Navbar";
 import Home from "./components/pages/Home";
 import About from "./components/pages/About";
 import Alerts from "./components/layout/Alerts";
-import "./App.css";
+import PrivateRoute from "./components/routing/PrivateRoutes";
 
 import ContactState from "./context/contact/ContactState";
 import AuthState from "./context/auth/authState";
@@ -13,6 +13,7 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 
 import setAuthToken from "./utils/setAuthtoken";
+import "./App.css";
 
 if (localStorage.getItem("token")) {
   setAuthToken(localStorage.getItem("token"));
@@ -29,7 +30,7 @@ const App = () => {
               <div className="container">
                 <Alerts />
                 <Switch>
-                  <Route exact path="/" component={Home}></Route>
+                  <PrivateRoute exact path="/" component={Home}></PrivateRoute>
                   <Route exact path="/about" component={About}></Route>
                   <Route exact path="/register" component={Register}></Route>
                   <Route exact path="/login" component={Login}></Route>

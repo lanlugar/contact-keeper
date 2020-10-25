@@ -34,7 +34,6 @@ const Login = (props) => {
 
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    console.log(user);
   };
 
   return (

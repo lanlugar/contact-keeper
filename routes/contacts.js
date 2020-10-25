@@ -21,7 +21,6 @@ router.get("/", auth, async (req, res) => {
     });
     res.json(contacts);
   } catch (err) {
-    console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
@@ -52,7 +51,6 @@ router.post(
       const contact = await newContact.save();
       res.json(contact);
     } catch (err) {
-      console.error(err.message);
       res.status(500).send("Server Error");
     }
   }
@@ -74,7 +72,7 @@ router.put(
     if (name) contactFields.name = name;
     if (email) contactFields.email = email;
     if (phone) contactFields.phone = phone;
-    if (type) contactFields.type = contactFields;
+    if (type) contactFields.type = type;
 
     try {
       let contact = await Contact.findById(req.params.id);
@@ -86,7 +84,6 @@ router.put(
         return res.status(401).json({ msg: "Not authorized" });
       }
 
-      console.log(contactFields);
       contact = await Contact.findByIdAndUpdate(
         req.params.id,
         { $set: contactFields },
@@ -95,7 +92,6 @@ router.put(
 
       res.json(contact);
     } catch (err) {
-      console.error(err.message);
       res.status(500).send("Server Error");
     }
   }
@@ -116,7 +112,6 @@ router.delete("/:id", auth, async (req, res) => {
     await Contact.findByIdAndRemove(req.params.id);
     res.json({ msg: "Contact removed" });
   } catch (err) {
-    console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
